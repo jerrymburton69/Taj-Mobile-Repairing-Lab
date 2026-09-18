@@ -1,0 +1,6 @@
+{
+  "name": "Taj Mobile Repairing Lab",
+  "description": "Premium Apple-inspired mobile diagnostics and repair lab website, live repair tracking, and management console.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

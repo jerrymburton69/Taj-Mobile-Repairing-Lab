@@ -1,0 +1,42 @@
+# ==========================================================
+# TAJ MOBILE REPAIRING LAB - Apache & InfinityFree .htaccess
+# ==========================================================
+
+Options -Indexes
+Options +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. Protect sensitive configuration and SQL files from direct download
+    <FilesMatch "^(config\.php|\.env|.*\.sql|\.git|composer\..*)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+
+    # Block access to config directory
+    RewriteRule ^config/ - [F,L]
+
+    # 2. Allow direct access to API files
+    RewriteCond %{REQUEST_URI} ^/api/ [NC]
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # 3. Direct /admin handling: serve index.html with admin state
+    RewriteRule ^admin/?$ index.html [L,QSA]
+    RewriteRule ^track/?$ index.html [L,QSA]
+
+    # 4. Standard SPA Fallback: if requested resource is not an existing file or folder
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
